@@ -8,17 +8,18 @@ router.use(bodyParser.urlencoded({extended: false}));
 
 /** ElasticSearch */
 var client = new elasticsearch.Client({
-  host: '<ES URL>',  // this will be changed as real ES domain
+  host: 'https://search-tission-kszjrdofwxpmbreuu554ox4vf4.ap-northeast-2.es.amazonaws.com',  // this will be changed as real ES domain
   //log: 'trace'
 });
 
 /** Twitch Dev Data */
-var redirectURL = '<Redirect URL>';
-var clientID = '<Client ID>';
-var clientSecret = '<Client Secret>';
+var redirectURL = 'http://13.209.6.186/twitch';
+var clientID = '0gb9ne4nvxe76q6au65momgtjwwuhh';
+var clientSecret = 'lg1h1ouxu6o93oldqj3eoeb7sqh2n3';
 
 // Home page
 router.get('/', function(req, res, next) {
+  console.log('wow');
   if(req.session.bIsLogined) // login already
   {
     res.redirect('/dashboard');
@@ -30,7 +31,7 @@ router.get('/', function(req, res, next) {
   }
 });
 
-/* Login, Logout: these will be made with Twitch API => no need to take get method */
+/* Login, Logout: these will be made with Twitch API */
 router.get('/login', function(req, res) {
   // Access control
   if(req.session.bIsLogined)
@@ -45,7 +46,6 @@ router.get('/login', function(req, res) {
 
 // get user information
 router.get('/twitch', function(req, res) {
-  var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   var code = req.originalUrl.substr(13, 30);
   request.post({
     url: 'https://id.twitch.tv/oauth2/token?client_id='+clientID+'&client_secret='+clientSecret+'&code='+code+'&grant_type=authorization_code&redirect_uri='+redirectURL
@@ -111,7 +111,7 @@ router.post('/dashboard', function(req, res) {
     body: {
       query: {
         match: {
-          userID: req.session.id
+          userID: req.session.loginAccount
         }
       }
     }
