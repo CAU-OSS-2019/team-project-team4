@@ -19,7 +19,6 @@ var clientSecret = '<Client Secret>';
 
 // Home page
 router.get('/', function(req, res, next) {
-  console.log('wow');
   if(req.session.bIsLogined) // login already
   {
     res.redirect('/dashboard');
