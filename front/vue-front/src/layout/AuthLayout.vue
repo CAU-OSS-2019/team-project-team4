@@ -63,14 +63,14 @@
               <li class="nav-item">
                 <a
                   href="https://github.com/CAU-OSS-2019/team-project-team4"
-                  class="nav-link"
+                  class="nav-link-succeess"
                   target="_blank"
                 >CAU-OSS-Team04</a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md"
-                  class="nav-link"
+                  class="nav-link-danger"
                   target="_blank"
                 >MIT License</a>
               </li>
