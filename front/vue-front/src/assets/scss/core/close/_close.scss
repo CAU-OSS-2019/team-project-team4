@@ -1,12 +1,10 @@
 //
 // Close
 //
-
 .close {
     @if $enable-transitions {
         transition: $transition-base;
     }
-    
     &>span:not(.sr-only) {
         background-color: $close-bg;
         color: $close-color;
@@ -20,13 +18,11 @@
             transition: $transition-base;
         }
     }
-
     &:hover,
     &:focus {
         background-color: $close-hover-bg;
         color: $close-hover-color;
         outline: none;
-
         span:not(.sr-only) {
             background-color: $close-hover-bg;
         }
