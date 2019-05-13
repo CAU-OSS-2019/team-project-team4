@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content bg-default">
+  <div class="main-content bg-twitch">
     <!-- Navbar -->
     <base-nav
       class="navbar-top navbar-horizontal navbar-dark"
@@ -85,7 +85,7 @@
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+          <polygon class="fill-twitch" points="2560 0 2560 100 0 100"></polygon>
         </svg>
       </div>
     </div>

@@ -1,6 +1,5 @@
 .main-content {
     position: relative;
-
     // Navbar
     .navbar-top {
         position: absolute;
@@ -12,7 +11,6 @@
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
-
     // Container
     .container-fluid {
         @include media-breakpoint-up(md) {
@@ -22,23 +20,17 @@
     }
 }
 
-
 // Offsets the main content depending on the sidebar positioning
-
 .navbar-vertical.navbar-expand {
-
     @each $breakpoint,
     $dimension in $grid-breakpoints {
-
         &-#{$breakpoint} {
-
             @include media-breakpoint-up(#{$breakpoint}) {
-
                 // Left
-                &.fixed-left + .main-content {
+                &.fixed-left+.main-content {
                     margin-left: $navbar-vertical-width;
                 } // Right
-                &.fixed-right + .main-content {
+                &.fixed-right+.main-content {
                     margin-right: $navbar-vertical-width;
                 }
             }
