@@ -20,12 +20,6 @@ export default new Router({
             import(/* webpackChunkName: "demo" */ "./views/Default.vue")
         },
         {
-          path: "/login",
-          name: "login",
-          component: () =>
-            import(/* webpackChunkName: "demo" */ "./views/Login.vue")
-        },
-        {
           path: "/register",
           name: "register",
           component: () =>
@@ -35,7 +29,6 @@ export default new Router({
     },
     {
       path: "/",
-      redirect: "login",
       component: DashboardLayout,
       children: [
         {
