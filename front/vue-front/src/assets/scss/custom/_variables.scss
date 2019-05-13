@@ -47,6 +47,7 @@ $green: #2dce89 !default;
 $teal: #11cdef !default;
 $cyan: #2bffc6 !default;
 $twitch: #6441a5 !default;
+$top: #9880ff !default;
 $colors: () !default;
 $colors: map-merge(
   (
@@ -72,7 +73,7 @@ $colors: map-merge(
 $default: #172b4d !default;
 $primary: #5e72e4 !default;
 $secondary: #f7fafc !default;
-$success: $green !default;
+$success: $top !default;
 $info: $teal !default;
 $warning: $orange !default;
 $danger: $red !default;
@@ -770,7 +771,7 @@ $footer-padding-x: 0;
 $footer-link-font-size: 0.85rem !default;
 $footer-bg: theme-color("secondary") !default;
 $footer-color: $gray-600 !default;
-$footer-link-color: $gray-500 !default;
+$footer-link-color: $white !default;
 $footer-link-hover-color: $gray-700 !default;
 $footer-heading-color: $gray-600 !default;
 $footer-heading-font-size: $font-size-sm !default;

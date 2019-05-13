@@ -53,7 +53,7 @@
               &copy; {{year}}
               <a
                 href="https://github.com/CAU-OSS-2019/team-project-team4"
-                class="text-success font-weight-bold ml-1"
+                class="text-green font-weight-bold ml-1"
                 target="_blank"
               >CAU-OSS-Team04</a>
             </div>
