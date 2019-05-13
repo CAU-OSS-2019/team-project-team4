@@ -53,7 +53,7 @@
               &copy; {{year}}
               <a
                 href="https://github.com/CAU-OSS-2019/team-project-team4"
-                class="font-weight-bold ml-1"
+                class="text-success font-weight-bold ml-1"
                 target="_blank"
               >CAU-OSS-Team04</a>
             </div>
@@ -63,14 +63,14 @@
               <li class="nav-item">
                 <a
                   href="https://github.com/CAU-OSS-2019/team-project-team4"
-                  class="nav-link-succeess"
+                  class="nav-link"
                   target="_blank"
                 >CAU-OSS-Team04</a>
               </li>
               <li class="nav-item">
                 <a
                   href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md"
-                  class="nav-link-danger"
+                  class="nav-link"
                   target="_blank"
                 >MIT License</a>
               </li>
