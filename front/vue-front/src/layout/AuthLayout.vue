@@ -66,7 +66,7 @@
       <div class="container">
         <div class="header-body text-center mb-7">
           <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-6">
+            <div class="col-lg-5 col-md-3">
               <h1 class="text-white">Welcome!</h1>
               <p class="text-lead text-white">
                 Use these awesome forms to login or create new account in
@@ -90,12 +90,12 @@
       </div>
     </div>
     <!-- Page content -->
-    <div class="container mt--8 pb-5">
+    <div class="container mt--8 pb-8">
       <slide-y-up-transition mode="out-in" origin="center top">
         <router-view></router-view>
       </slide-y-up-transition>
     </div>
-    <footer class="py-5">
+    <footer class="py-9">
       <div class="container">
         <div class="row align-items-center justify-content-xl-between">
           <div class="col-xl-6">
