@@ -18,12 +18,6 @@ export default new Router({
           name: "default",
           component: () =>
             import(/* webpackChunkName: "demo" */ "./views/Default.vue")
-        },
-        {
-          path: "/register",
-          name: "register",
-          component: () =>
-            import(/* webpackChunkName: "demo" */ "./views/Register.vue")
         }
       ]
     },
@@ -39,30 +33,6 @@ export default new Router({
           // which is lazy-loaded when the route is visited.
           component: () =>
             import(/* webpackChunkName: "demo" */ "./views/Dashboard.vue")
-        },
-        {
-          path: "/icons",
-          name: "icons",
-          component: () =>
-            import(/* webpackChunkName: "demo" */ "./views/Icons.vue")
-        },
-        {
-          path: "/profile",
-          name: "profile",
-          component: () =>
-            import(/* webpackChunkName: "demo" */ "./views/UserProfile.vue")
-        },
-        {
-          path: "/maps",
-          name: "maps",
-          component: () =>
-            import(/* webpackChunkName: "demo" */ "./views/Maps.vue")
-        },
-        {
-          path: "/tables",
-          name: "tables",
-          component: () =>
-            import(/* webpackChunkName: "demo" */ "./views/Tables.vue")
         }
       ]
     }
