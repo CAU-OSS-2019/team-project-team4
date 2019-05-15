@@ -3,7 +3,9 @@
     <div class="col-lg-5 col-md-7">
       <div>
         <div class="text-center">
-          <base-button type="twitch col-lg-5" v-on:click="gotoLogin">Login</base-button>
+          <router-link class="base-nav col-lg-10" to="/">
+            <base-button type="twitch col-lg-5" icon="fa fa-twitch" >Login</base-button>
+          </router-link>
         </div>
       </div>
     </div>
