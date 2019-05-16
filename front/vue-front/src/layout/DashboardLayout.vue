@@ -5,7 +5,7 @@
         <sidebar-item
           :link="{
             name: 'Dashboard',
-            icon: 'ni ni-tv-2 text-primary',
+            icon: 'ni ni-align-left-2 text-primary',
             path: '/dashboard'
           }"
         />
