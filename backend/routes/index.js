@@ -3,19 +3,20 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var elasticsearch = require('elasticsearch');
 var request = require('request');
+var path = require('path');
 
 router.use(bodyParser.urlencoded({extended: false}));
 
 /** ElasticSearch */
 var client = new elasticsearch.Client({
-  host: '<Elasticsearch URL>',  // this will be changed as real ES domain
+  host: '<elasticsearch url>',  // this will be changed as real ES domain
   //log: 'trace'
 });
 
 /** Twitch Dev Data */
-var redirectURL = '<redirect URL>';
-var clientID = '<Client ID>';
-var clientSecret = '<Client Secret>';
+var redirectURL = '<redirect url>';
+var clientID = '<client id>';
+var clientSecret = '<client secret>';
 
 // Home page
 router.get('/', function(req, res, next) {
@@ -93,11 +94,10 @@ router.get('/dashboard', function(req, res) {
     res.redirect('/');
     return false;
   }
-  res.send('Hello, ' + req.session.displayname);
-  //res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-router.post('/dashboard', function(req, res) {
+router.post('/get_result', function(req, res) {
   // Access control
   if(!req.session.bIsLogined)
   {
@@ -113,12 +113,99 @@ router.post('/dashboard', function(req, res) {
           userID: req.session.loginAccount
         }
       }
-    }
+    },
+    refresh: 'wait_for'
   }, function(searcherr, searchres) {
     console.log('search complete');
     // send data to frontend
+    var searchResult = searchres.hits.hits;
+    var resultData = [];
+    for(var i = 0; i < searchres.hits.total; i++)
+    {
+      resultData.push(i);
+      resultData[i] = [];
+      resultData[i].push('id'); resultData[i].push('donatorID'); resultData[i].push('content'); resultData[i].push('status');
+      resultData[i]['id'] = searchResult[i]._source.id;
+      resultData[i]['donatorID'] = searchResult[i]._source.donatorID;
+      resultData[i]['content'] = searchResult[i]._source.content;
+      resultData[i]['status'] = searchResult[i]._source.status;
+    }
+    res.send(resultData);
+  });
+});
 
-    res.send('');
+router.post('/mission_success', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  // update mission data
+  client.updateByQuery({
+    index: 'entity',
+    body: {
+      query: {
+        match: {
+          id: req.body.id // id data from frontend
+        }
+      },
+      script: {
+        inline: 'ctx._source.status = '+"\'success\'"
+      }
+    },
+    refresh: 'wait_for'
+  }, function(err, updateres) {
+    console.log('update mission to "success" successfully');
+  });
+});
+
+router.post('/mission_fail', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  // update mission data
+  client.updateByQuery({
+    index: 'entity',
+    body: {
+      query: {
+        match: {
+          id: req.body.id // id data from frontend
+        }
+      },
+      script: {
+        inline: 'ctx._source.status = '+"\'fail\'"
+      }
+    },
+    refresh: 'wait_for'
+  }, function(err, updateres) {
+    console.log('updata mission to "fail" successfully');
+  });
+});
+
+router.post('/mission_delete', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  // delete mission data
+  client.deleteByQuery({
+    index: 'entity',
+    body: {
+      query: {
+        match: {
+          id: req.body.id //id data from frontend
+        }
+      }
+    },
+    refresh: 'wait_for'
+  }, function(err, deleteres) {
+    console.log('delete '+req.body.id+' mission successfully');
   });
 });
 
