@@ -3,10 +3,9 @@
     <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"></base-header>
 
     <div class="container-fluid mt--7">
-
       <div class="row mt-5">
         <div class="col-xl-8 mb-5 mb-xl-0">
-          <page-visits-table></page-visits-table>
+          <page-visits-table v-bind:propsdata="resultData"></page-visits-table>
         </div>
       </div>
       <div class="row mt-5">
@@ -17,13 +16,26 @@
 </template>
 <script>
 // Tables
-import SocialTrafficTable from "./Dashboard/SocialTrafficTable";
+
 import PageVisitsTable from "./Dashboard/PageVisitsTable";
 
 export default {
   components: {
-    PageVisitsTable,
-    SocialTrafficTable
+    PageVisitsTable
+  },
+
+  data() {
+    return {
+      resultData: [
+        ["test1", "testdonate", "구르면 천원 줌", "mission"],
+        [
+          "test2",
+          "ChanghwanJjangJjang",
+          "창환이는 똑똑하다 하면 처넌 줌",
+          "mission"
+        ]
+      ]
+    };
   },
 
   methods: {

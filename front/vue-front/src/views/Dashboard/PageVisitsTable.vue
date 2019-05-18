@@ -12,83 +12,25 @@
     </div>
 
     <div class="table-responsive">
-      <base-table thead-classes="thead-light"
-                  :data="tableData">
+      <base-table thead-classes="thead-light" :data="propsdata">
         <template slot="columns">
-          <th>Page name</th>
-          <th>Visitors</th>
-          <th>Unique users</th>
-          <th>Bounce rate</th>
+          <th>후원인</th>
+          <th>후원내역</th>
         </template>
 
-        <template slot-scope="{row}">
-          <th scope="row">
-            {{row.page}}
-          </th>
-          <td>
-            {{row.visitors}}
-          </td>
-          <td>
-            {{row.unique}}
-          </td>
-          <td>
-            <i class="fas fa-arrow-up text-success mr-3"
-               :class="row.bounceRateDirection === 'up' ? 'text-success': 'text-danger'">
-            </i>
-            {{row.bounceRate}}
-          </td>
+        <template slot-scope="row">
+          <th scope="row">{{ propsdata[row.index][1] }}</th>
+          <td>{{ propsdata[row.index][2] }}</td>
         </template>
-
       </base-table>
     </div>
-
   </div>
 </template>
 <script>
-  export default {
-    name: 'page-visits-table',
-    data() {
-      return {
-        tableData: [
-          {
-            page: '/argon/',
-            visitors: '4,569',
-            unique: '340',
-            bounceRate: '46,53%',
-            bounceRateDirection: 'up'
-          },
-          {
-            page: '/argon/index.html',
-            visitors: '3,985',
-            unique: '319',
-            bounceRate: '46,53%',
-            bounceRateDirection: 'down'
-          },
-          {
-            page: '/argon/charts.html',
-            visitors: '3,513',
-            unique: '294',
-            bounceRate: '36,49%',
-            bounceRateDirection: 'down'
-          },
-          {
-            page: '/argon/tables.html',
-            visitors: '2,050',
-            unique: '147',
-            bounceRate: '50,87%',
-            bounceRateDirection: 'up'
-          },
-          {
-            page: '/argon/profile.html',
-            visitors: '1,795',
-            unique: '190',
-            bounceRate: '46,53%',
-            bounceRateDirection: 'down'
-          }
-        ]
-      }
-    }
-  }
+export default {
+  props: ["propsdata"],
+  name: "page-visits-table"
+};
 </script>
 <style>
 </style>
