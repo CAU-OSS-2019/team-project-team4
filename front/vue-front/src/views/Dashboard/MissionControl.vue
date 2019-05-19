@@ -16,13 +16,21 @@
 
         <template slot-scope="row">
           <th scope="row">
-            <base-button outline type="default" v-on:click="success(row.index)">Success</base-button>
+            <base-button
+              outline
+              type="default"
+              v-on:click="manage(row.index, 'mission_success')"
+            >Success</base-button>
           </th>
           <td>
-            <base-button outline type="default">Fail</base-button>
+            <base-button outline type="default" v-on:click="manage(row.index, 'mission_fail')">Fail</base-button>
           </td>
           <td>
-            <base-button outline type="default">Delete</base-button>
+            <base-button
+              outline
+              type="default"
+              v-on:click="manage(row.index, 'mission_delete')"
+            >Delete</base-button>
           </td>
         </template>
       </base-table>
@@ -34,9 +42,8 @@ export default {
   props: ["propsdata"],
   name: "mission-control",
   methods: {
-    success: function(index) {
-      this.$emit("success", index);
-      console.log(this.propsdata);
+    manage: function(index, status) {
+      this.$emit("manage", index, status);
     }
   }
 };

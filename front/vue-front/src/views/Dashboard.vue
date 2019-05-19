@@ -8,7 +8,7 @@
           <page-visits-table v-bind:propsdata="resultData"></page-visits-table>
         </div>
         <div class="col-xl-4">
-          <mission-control v-bind:propsdata="resultData1" v-on:success="success"></mission-control>
+          <mission-control v-bind:propsdata="resultData1" v-on:manage="manage"></mission-control>
         </div>
       </div>
       <div class="row mt-5">
@@ -38,7 +38,8 @@ export default {
           "ChanghwanJjangJjang",
           "창환이는 똑똑하다 하면 처넌 줌",
           "mission"
-        ]
+        ],
+        ["test3", "ChanghwanKingGod", "최창환짱짱맨하면 이마넌줌", "mission"]
       ],
       resultData1: [
         ["test1", "testdonate", "구르면 천원 줌", "mission"],
@@ -47,17 +48,18 @@ export default {
           "ChanghwanJjangJjang",
           "창환이는 똑똑하다 하면 처넌 줌",
           "mission"
-        ]
+        ],
+        ["test3", "ChanghwanKingGod", "최창환짱짱맨하면 이마넌줌", "mission"]
       ]
     };
   },
 
   methods: {
-    success: function(index) {
+    manage: function(index, status) {
       this.resultData.splice(index, 1);
       this.resultData1.splice(index, 1);
 
-      console.log("호우");
+      console.log(status);
     }
   }
 };
