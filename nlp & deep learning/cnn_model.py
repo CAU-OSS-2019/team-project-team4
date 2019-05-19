@@ -90,7 +90,7 @@ class TextCNN(object):
 
         # Accuracy
         with tf.name_scope("accuracy"):
-            correct_predictions = tf.equal(self.predictions, tf.argmax(self.input_y, 1))
+            correct_predictions = tf.equal(self.predictions, tf.argmax(self.input_y, 1)) # tf.argmax(self.input_y, 1)
             self.accuracy = tf.reduce_mean(tf.cast(correct_predictions, "float"), name="accuracy")
 
 
@@ -125,7 +125,7 @@ for line in rdr:
         lineList.pop()
     if lineList:
         cnn_x_train.append(lineList[:])
-        if y_data == 1:
+        if y_data == '1':
             cnn_y_train.append([1, 0])
         else:
             cnn_y_train.append([0, 1])
@@ -197,6 +197,7 @@ print("")
 
 # 3. train the model and test
 with tf.Graph().as_default():
+    init_op = tf.global_variables_initializer()
     sess = tf.Session()
     with sess.as_default():
         cnn = TextCNN(sequence_length = 6,
@@ -330,3 +331,4 @@ with tf.Graph().as_default():
                 print("Saved model checkpoint to {}\n".format(path))
 
         saver.save(sess, 'saved_model')
+
