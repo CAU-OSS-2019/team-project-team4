@@ -3,7 +3,7 @@
     class="dropdown"
     :is="tag"
     :class="[{show: isOpen}, {'dropdown': direction === 'down'}, {'dropup': direction ==='up'}]"
-    aria-haspopup="false"
+    aria-haspopup="true"
     :aria-expanded="isOpen"
     @click="toggleDropDown"
     v-click-outside="closeDropDown"
