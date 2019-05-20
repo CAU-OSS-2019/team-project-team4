@@ -16,10 +16,10 @@
             <div class="dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome {{userName}}!!</h6>
             </div>
-            <router-link to="/" class="dropdown-item">
+            <div class="dropdown-item">
               <i class="fa fa-sign-out"></i>
-              <span>Logout</span>
-            </router-link>
+              <span v-on:click="logout()">Logout</span>
+            </div>
           </template>
         </base-dropdown>
       </li>
@@ -52,6 +52,12 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    },
+    logout() {
+      axios.post('/logout')
+      .then((res) => {
+        window.location.pathname = '/'
+      })
     }
   },
 };
