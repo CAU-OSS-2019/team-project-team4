@@ -9,7 +9,7 @@
               <i class="twitch fa fa-user-circle"></i>
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm font-weight-bold">(userName){{userName}}</span>
+              <span class="mb-0 text-sm font-weight-bold" v-if="userName.length!=0">{{userName}}</span>
             </div>
           </div>
           <template>
@@ -27,6 +27,7 @@
   </base-nav>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -35,6 +36,12 @@ export default {
       searchQuery: "",
       userName: "",
     };
+  },
+  created() {
+    axios.post('/get_username')
+    .then((res) => {
+      this.userName = res.data
+    })
   },
   methods: {
     toggleSidebar() {
@@ -46,6 +53,6 @@ export default {
     toggleMenu() {
       this.showMenu = !this.showMenu;
     }
-  }
+  },
 };
 </script>
