@@ -4,19 +4,20 @@ var bodyParser = require('body-parser');
 var elasticsearch = require('elasticsearch');
 var request = require('request');
 var path = require('path');
+var fs = require('fs');
 
 router.use(bodyParser.urlencoded({extended: false}));
 
 /** ElasticSearch */
 var client = new elasticsearch.Client({
-  host: '<elasticsearch url>',  // this will be changed as real ES domain
+  host: 'https://search-tission-kszjrdofwxpmbreuu554ox4vf4.ap-northeast-2.es.amazonaws.com',  // this will be changed as real ES domain
   //log: 'trace'
 });
 
 /** Twitch Dev Data */
-var redirectURL = '<redirect url>';
-var clientID = '<client id>';
-var clientSecret = '<client secret>';
+var redirectURL = 'http://13.209.6.186/twitch';
+var clientID = '0gb9ne4nvxe76q6au65momgtjwwuhh';
+var clientSecret = 'lg1h1ouxu6o93oldqj3eoeb7sqh2n3';
 
 // Home page
 router.get('/', function(req, res, next) {
@@ -63,6 +64,7 @@ router.get('/twitch', function(req, res) {
       req.session.bIsLogined = true;
       req.session.loginAccount = userdata['data'][0]['login'];
       req.session.displayname = userdata['data'][0]['display_name'];
+      req.session.profile_image_url = userdata['data'][0]['profile_image_url'];
       req.session.save();
       console.log(req.session);
       res.redirect('/dashboard');
@@ -81,9 +83,9 @@ router.post('/logout', function(req, res) {
   delete req.session.bIsLogined;
   delete req.session.loginAccount;
   delete req.session.displayname;
-  req.session.save(function() {
-    res.redirect('/');
-  });
+  delete req.session.profile_image_url;
+  req.session.save();
+  res.send('');
 });
 
 /* mission page */
@@ -110,26 +112,28 @@ router.post('/get_result', function(req, res) {
     body: {
       query: {
         match: {
-          userID: req.session.loginAccount
+          streamerID: req.session.loginAccount
         }
       }
-    },
-    refresh: 'wait_for'
+    }
   }, function(searcherr, searchres) {
     console.log('search complete');
     // send data to frontend
-    var searchResult = searchres.hits.hits;
     var resultData = [];
-    for(var i = 0; i < searchres.hits.total; i++)
+    if(searchres.hits != null)
     {
-      resultData.push(i);
-      resultData[i] = [];
-      resultData[i].push('id'); resultData[i].push('donatorID'); resultData[i].push('content'); resultData[i].push('status');
-      resultData[i]['id'] = searchResult[i]._source.id;
-      resultData[i]['donatorID'] = searchResult[i]._source.donatorID;
-      resultData[i]['content'] = searchResult[i]._source.content;
-      resultData[i]['status'] = searchResult[i]._source.status;
+      var searchResult = searchres.hits.hits;
+      for(var i = 0; i < searchres.hits.total; i++)
+      {
+        resultData.push(i);
+        resultData[i] = [];
+        resultData[i].push(searchResult[i]._id);
+        resultData[i].push(searchResult[i]._source.donatorID);
+        resultData[i].push(searchResult[i]._source.content);
+        resultData[i].push(searchResult[i]._source.status);
+      }
     }
+    //console.log(resultData);
     res.send(resultData);
   });
 });
@@ -141,13 +145,14 @@ router.post('/mission_success', function(req, res) {
     res.redirect('/');
     return false;
   }
+  console.log('mission success: '+req.body.id);
   // update mission data
   client.updateByQuery({
     index: 'entity',
     body: {
       query: {
         match: {
-          id: req.body.id // id data from frontend
+          _id: req.body.id // id data from frontend
         }
       },
       script: {
@@ -167,13 +172,14 @@ router.post('/mission_fail', function(req, res) {
     res.redirect('/');
     return false;
   }
+  console.log('mission fail: '+req.body.id);
   // update mission data
   client.updateByQuery({
     index: 'entity',
     body: {
       query: {
         match: {
-          id: req.body.id // id data from frontend
+          _id: req.body.id // id data from frontend
         }
       },
       script: {
@@ -193,13 +199,14 @@ router.post('/mission_delete', function(req, res) {
     res.redirect('/');
     return false;
   }
+  console.log('mission delete: '+req.body.id);
   // delete mission data
   client.deleteByQuery({
     index: 'entity',
     body: {
       query: {
         match: {
-          id: req.body.id //id data from frontend
+          _id: req.body.id //id data from frontend
         }
       }
     },
@@ -208,5 +215,71 @@ router.post('/mission_delete', function(req, res) {
     console.log('delete '+req.body.id+' mission successfully');
   });
 });
+
+router.post('/get_userinfo', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  var userinfo = [req.session.displayname, req.session.profile_image_url];
+  console.log(userinfo);
+  res.send(userinfo);
+});
+
+var spawn = require("child_process").spawn;
+var idcount = 0
+//var process = spawn('python', ['./twipcrawler.py']);  //python3
+var currentPath = path.join(__dirname, '../missionResult.json');
+fs.readFile(currentPath, async function(err, data)
+{
+  var result = JSON.parse(data.toString());
+  console.log(result);
+  var i = 0;
+  //missionstr.push(result[i].content);
+  runModel(result[i].content, i, result);
+});
+
+function runModel(missionstr, i, result) {
+  var filePath = path.join(__dirname, '../load_model_and_predict.py');
+  var process2 = spawn('python3', [filePath, missionstr]);  //python3
+  console.log(missionstr);
+  var bIsMission;
+  process2.stdout.on('data', function(data) {
+    bIsMission = data.toString();
+  });
+  process2.stdout.on('end', function() {
+    if(bIsMission == 0)
+    {
+      idcount++;
+      console.log('미션입니다' + i);
+      console.log(idcount);
+      client.bulk({
+        body: [
+          {"index": {"_index": "entity", "_type": "mission", "_id": "vo2qjsld-"+idcount}},
+          {
+            "streamerID": 'vo2qjsld',//result[i].streamerID,
+            "donatorID": result[i].donatorID,
+            "content": result[i].content,
+            "status": "mission"
+          }
+        ]
+      }, function(err, createres) {
+        console.log(createres);
+      })
+    }
+    else
+    {
+      console.log('미션이 아닙니다');
+    }
+
+    i++;
+    if(i < result.length)
+    {
+      runModel(result[i].content, i, result);
+    }
+  });
+}
 
 module.exports = router;
