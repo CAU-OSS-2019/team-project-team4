@@ -8,7 +8,7 @@ Paper link : http://emnlp2014.org/papers/pdf/EMNLP2014181.pdf
 
 Github link : https://github.com/yoonkim/CNN_sentence
 
-##Requirements
+## Requirements
 * Python 3.7 or above
 * Tensorflow 0.12 or above
 * Numpy
