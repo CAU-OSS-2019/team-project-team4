@@ -31,8 +31,22 @@ The training chat logs(sentences) are mined from various **Twitch streamer chann
 
 Ex) 우주하마, 윤루트, 실프 and so on
 
+### Training & Accuracy
+
 **Total of 1000 chat logs** are used which 500 of them are valid mission chats and the other 500 are not.
 
 800 chats logs are used in training and the other 200 are used in testing.
 
 Accuracy converges to nearly **100%** but the model is not yet applied to real circumstances.
+
+'''
+./cnn_model
+'''
+
+### Evaluating
+
+You can input your own sentence and find out the result.
+
+'''
+./load_model_and_predict
+'''
