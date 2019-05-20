@@ -24,6 +24,11 @@ Then the list variable is used as a training data of the newly created **Word2Ve
 
 After the word tokens of the training data are vectorized and trained in the Word2Vec model then the model is saved as a file.
 
+### Training
+```
+./nlp_w2v_model.py
+```
+
 ## Deep Learning(CNN Model)
 Customizing the existing and performance-proven CNN model created by Prof. Yoon Kim, the model uses pre-trained Word2Vec model for its training.
 
