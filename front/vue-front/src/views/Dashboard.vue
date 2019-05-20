@@ -4,11 +4,8 @@
 
     <div class="container-fluid mt--7">
       <div class="row mt-5">
-        <div class="col-xl-8 mb-5 mb-xl-0">
-          <page-visits-table v-bind:propsdata="resultData"></page-visits-table>
-        </div>
-        <div class="col-xl-4">
-          <mission-control v-bind:propsdata="resultData1" v-on:manage="manage"></mission-control>
+        <div class="col mb-5 mb-xl-0">
+          <page-visits-table v-bind:propsdata="resultData" v-on:manage="manage"></page-visits-table>
         </div>
       </div>
       <div class="row mt-5">
@@ -21,11 +18,9 @@
 // Tables
 
 import PageVisitsTable from "./Dashboard/PageVisitsTable";
-import MissionControl from "./Dashboard/MissionControl";
 
 export default {
   components: {
-    MissionControl,
     PageVisitsTable
   },
 
@@ -58,7 +53,7 @@ export default {
     manage: function(index, status) {
       this.resultData.splice(index, 1);
       this.resultData1.splice(index, 1);
-
+      /* eslint-disable no-console */
       console.log(status);
     }
   }
