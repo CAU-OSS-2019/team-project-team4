@@ -44,7 +44,7 @@ export default {
     manage: function(index, status) {
       this.resultData.splice(index, 1);
       this.sendServer(index, status);
-
+      /* eslint-disable no-console */
       console.log(status);
     },
     sendServer: function(index, status) {
@@ -57,7 +57,9 @@ export default {
           currentObj.resultDataTemp = response.data;
           this.trimResultData();
         })
+        /* eslint-disable */
         .catch(function(error) {
+          /* eslint-disable no-console */
           console.log("error");
         });
     },
@@ -70,6 +72,7 @@ export default {
           this.trimResultData();
         })
         .catch(function() {
+          /* eslint-disable no-console */
           console.log("error");
         });
     },
@@ -89,6 +92,7 @@ export default {
   },
   mounted() {
     this.setRefresh();
+    /* eslint-disable no-console */
     console.log("mounted");
   }
 };
