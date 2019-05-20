@@ -39,14 +39,14 @@ Ex) 우주하마, 윤루트, 실프 and so on
 
 Accuracy converges to nearly **100%** but the model is not yet applied to real circumstances.
 
-'''
+```
 ./cnn_model
-'''
+```
 
 ### Evaluating
 
 You can input your own sentence and find out the result.
 
-'''
+```
 ./load_model_and_predict
-'''
+```
