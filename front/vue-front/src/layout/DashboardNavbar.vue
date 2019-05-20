@@ -5,8 +5,8 @@
       <li class="nav-item dropdown">
         <base-dropdown class="nav-link pr-5">
           <div class="media align-items-center" slot="title">
-            <span class="avatar avatar-sm rounded-circle">
-              <i class="twitch fa fa-user-circle"></i>
+            <span class="avatar avatar-sm rounded-circle" v-if="profile_image_url.length!=0">
+              <img v-bind:src="profile_image_url" />
             </span>
             <div class="media-body ml-2 d-none d-lg-block">
               <span class="mb-0 text-sm font-weight-bold" v-if="userName.length!=0">{{userName}}</span>
@@ -35,12 +35,15 @@ export default {
       showMenu: false,
       searchQuery: "",
       userName: "",
+      profile_image_url: ""
     };
   },
   created() {
-    axios.post('/get_username')
+    axios.post('/get_userinfo')
     .then((res) => {
-      this.userName = res.data
+      this.userName = res.data[0]
+      this.profile_image_url = res.data[1]
+      console.log(this.userName, this.profile_image_url)
     })
   },
   methods: {
