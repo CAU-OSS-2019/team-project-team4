@@ -17,14 +17,22 @@ Github link : https://github.com/yoonkim/CNN_sentence
 
 ## NLP
 The **natural language processing(NLP)** is done by using **KoNLPy**(pronounced “ko en el PIE”) which is a python package for Korean language.
+
 Input data(pubg chat logs in txt format) is processed to tokens through the **Okt module** in KoNLPy and saved as a list variable.
+
 Then the list variable is used as a training data of the newly created **Word2Vec model** and the training occurs.
+
 After the word tokens of the training data are vectorized and trained in the Word2Vec model then the model is saved as a file.
 
 ## Deep Learning(CNN Model)
 Customizing the existing and performance-proven CNN model created by Prof. Yoon Kim, the model uses pre-trained Word2Vec model for its training.
-The training chat logs(sentences) are mined from various Twitch streamer channels that focuses on the game PlayerUnknown's Battlegrounds(aka. Pubg)
+
+The training chat logs(sentences) are mined from various **Twitch streamer channels** that focuses on the game **PlayerUnknown's Battlegrounds**(aka. Pubg).
+
 Ex) 우주하마, 윤루트, 실프 and so on
-Total of 1000 chat logs are used which 500 of them are valid mission chats and the other 500 are not.
+
+**Total of 1000 chat logs** are used which 500 of them are valid mission chats and the other 500 are not.
+
 In model training 800 chats logs are used and the other 200 are used in testing.
-Accuracy converges to nearly 100% but the model is not yet applied to real circumstances.
+
+Accuracy converges to nearly **100%** but the model is not yet applied to real circumstances.
