@@ -26,73 +26,63 @@ export default {
 
   data() {
     return {
-      resultData: [
-        ["test1", "testdonate", "구르면 천원 줌", "mission"],
-        [
-          "test2",
-          "ChanghwanJjangJjang",
-          "창환이는 똑똑하다 하면 처넌 줌",
-          "mission"
-        ],
-        ["test3", "ChanghwanKingGod", "최창환짱짱맨하면 이마넌줌", "mission"]
-      ],
-      resultDataTemp: []
-    };
+      resultData: [],
+      resultDataTemp: [],
+    }
   },
 
   methods: {
     manage: function(index, status) {
-      this.resultData.splice(index, 1);
+      //this.resultData.splice(index, 1);
       this.sendServer(index, status);
-      /* eslint-disable no-console */
+
       console.log(status);
     },
     sendServer: function(index, status) {
       let currentObj = this;
       this.axios
-        .post("" + "/" + status, {
+        .post("/" + status, {
           id: this.resultData[index][0]
         })
         .then(function(response) {
           currentObj.resultDataTemp = response.data;
-          this.trimResultData();
+          currentObj.trimResultData()
         })
-        /* eslint-disable */
         .catch(function(error) {
-          /* eslint-disable no-console */
-          console.log("error");
+          console.log("senserver error");
         });
     },
     refresh: function() {
       let currentObj = this;
-      this.axios
-        .post("" + "/get_result")
+      this.axios.post('/get_result')
         .then(function(response) {
-          currentObj.resultDataTemp = response.data;
-          this.trimResultData();
+          currentObj.resultDataTemp = response.data
+          //console.log(currentObj.resultDataTemp)
+          currentObj.trimResultData()
         })
         .catch(function() {
-          /* eslint-disable no-console */
-          console.log("error");
+          console.log("refresh error");
         });
     },
     setRefresh: function() {
       setInterval(() => {
-        this.refresh();
-      }, 3000);
+        this.refresh()
+      }, 3000)
     },
     trimResultData: function() {
-      for (var i = 0; i < this.resultData.length; i++) {
-        if (this.resultDataTemp[i][3] !== "mission") {
-          this.resultDataTemp.splice(i, 1);
+      this.resultData = []
+      for (var i = 0; i < this.resultDataTemp.length; i++) {
+        if (this.resultDataTemp[i][3] == "mission") {
+          //this.resultDataTemp.splice(i, 1)
+          this.resultData.push(this.resultDataTemp[i])
         }
       }
-      this.resultData = this.resultDataTemp;
+      //this.resultData = this.resultDataTemp;
+      console.log(this.resultData)
     }
   },
   mounted() {
-    this.setRefresh();
-    /* eslint-disable no-console */
+    this.setRefresh()
     console.log("mounted");
   }
 };
