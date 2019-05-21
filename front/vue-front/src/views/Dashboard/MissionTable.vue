@@ -69,11 +69,10 @@
                         <small class="fa fa-edit">Modify mission</small>
                     </div>
                     <form role="form">
-                        <base-input alternative
-                                    type="mission"
-                                    placeholder="Mission"
-                                    addon-left-icon="fa fa-mission">
-                        </base-input>
+                      <input  type="text"
+                        class="form-control mb-2"
+                        placeholder="Mission"
+                        v-model="missions">
                         <div class="text-center">
                             <base-button type="primary" class="text-right my-4">close</base-button>
                             <base-button type="primary" class="test-right my-4">Modify</base-button>
@@ -120,16 +119,15 @@
             </template>
             <div>
               <form role="form">
-                <base-input   type="donator"
-                              placeholder="Donator"
-                              addon-left-icon="ni ni-circle-08"
-                              ></base-input>
-                <base-input type="mission"
+                    <input  type="text"
+                        class="form-control mb-2"
+                        placeholder="Donator"
+                        v-model="donators">
+                    <input type="text"
+                            class="form-control"
                             placeholder="Mission"
-                            addon-left-icon="ni ni-bold-right"
-                            ></base-input>
-                        
-                    </form>
+                            v-model="missions">
+              </form>
             </div>
             <template slot="footer">
                 <base-button type="secondary" @click="modals.modal1 = false">Cancel</base-button>
