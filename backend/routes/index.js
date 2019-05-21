@@ -7,6 +7,8 @@ var path = require('path');
 var fs = require('fs');
 
 router.use(bodyParser.urlencoded({extended: false}));
+var spawn = require("child_process").spawn;
+var idcount = 0 // for assign id to mission data
 
 /** ElasticSearch */
 var client = new elasticsearch.Client({
@@ -18,6 +20,9 @@ var client = new elasticsearch.Client({
 var redirectURL = 'http://13.209.6.186/twitch';
 var clientID = '0gb9ne4nvxe76q6au65momgtjwwuhh';
 var clientSecret = 'lg1h1ouxu6o93oldqj3eoeb7sqh2n3';
+
+// check if model is running
+var bIsModelRun = false;
 
 // Home page
 router.get('/', function(req, res, next) {
@@ -106,6 +111,17 @@ router.post('/get_result', function(req, res) {
     res.redirect('/');
     return false;
   }
+  // get misssions from model
+  var currentPath = path.join(__dirname, '../missionResult.json');
+  fs.readFile(currentPath, async function(err, data)
+  {
+    var result = JSON.parse(data.toString());
+    console.log(result);
+    var i = 0;
+    //missionstr.push(result[i].content);
+    if(bIsModelRun == false) {runModel(result[i].content, i, result); bIsModelRun = true;}
+  });
+
   // get information from current id
   client.search({
     index: 'entity',
@@ -228,18 +244,7 @@ router.post('/get_userinfo', function(req, res) {
   res.send(userinfo);
 });
 
-var spawn = require("child_process").spawn;
-var idcount = 0
-//var process = spawn('python', ['./twipcrawler.py']);  //python3
-var currentPath = path.join(__dirname, '../missionResult.json');
-fs.readFile(currentPath, async function(err, data)
-{
-  var result = JSON.parse(data.toString());
-  console.log(result);
-  var i = 0;
-  //missionstr.push(result[i].content);
-  runModel(result[i].content, i, result);
-});
+//var process = spawn('python3', ['./twipcrawler.py']);  //python3
 
 function runModel(missionstr, i, result) {
   var filePath = path.join(__dirname, '../load_model_and_predict.py');
@@ -278,6 +283,10 @@ function runModel(missionstr, i, result) {
     if(i < result.length)
     {
       runModel(result[i].content, i, result);
+    }
+    else
+    {
+      bIsModelRun = false;
     }
   });
 }
