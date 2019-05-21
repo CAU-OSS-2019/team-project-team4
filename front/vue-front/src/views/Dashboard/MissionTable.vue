@@ -70,7 +70,7 @@
                     </div>
                     <form role="form">
                         <base-input alternative
-                                    type="password"
+                                    type="mission"
                                     placeholder="Mission"
                                     addon-left-icon="fa fa-mission">
                         </base-input>
@@ -116,14 +116,24 @@
           </base-button>
           <modal :show.sync="modals.modal1">
             <template slot="header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Create Mission</h5>
             </template>
             <div>
-              ...
+              <form role="form">
+                <base-input   type="donator"
+                              placeholder="Donator"
+                              addon-left-icon="ni ni-circle-08"
+                              ></base-input>
+                <base-input type="mission"
+                            placeholder="Mission"
+                            addon-left-icon="ni ni-bold-right"
+                            ></base-input>
+                        
+                    </form>
             </div>
             <template slot="footer">
-                <base-button type="secondary" @click="modals.modal1 = false">Close</base-button>
-                <base-button type="primary">Save changes</base-button>
+                <base-button type="secondary" @click="modals.modal1 = false">Cancel</base-button>
+                <base-button type="primary">Save Mission</base-button>
             </template>
           </modal>
             

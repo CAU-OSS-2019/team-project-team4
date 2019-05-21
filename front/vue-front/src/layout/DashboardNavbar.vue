@@ -3,7 +3,7 @@
     <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"/>
     <ul class="navbar-nav align-items-center d-none d-md-flex">
       <li class="nav-item dropdown">
-        <base-dropdown class="nav-link pr-5">
+        <base-dropdown position="right" class="nav-link pr-5">
           <div class="media align-items-center" slot="title">
             <span class="avatar avatar-sm rounded-circle" v-if="profile_image_url.length!=0">
               <img v-bind:src="profile_image_url" />
