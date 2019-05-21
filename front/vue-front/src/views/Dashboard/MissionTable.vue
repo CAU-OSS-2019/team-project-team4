@@ -65,41 +65,18 @@
                   body-classes="px-lg-5 py-lg-5"
                   class="border-0">
                 <template>
-                    <div class="text-muted text-center mb-3">
-                        <small>Sign in with</small>
-                    </div>
-                    <div class="btn-wrapper text-center">
-                        <base-button type="neutral">
-                            <img slot="icon" src="https://demos.creative-tim.com/argon-design-system/assets/img/icons/common/github.svg">
-                            Github
-                        </base-button>
-
-                        <base-button type="neutral">
-                            <img slot="icon" src="https://demos.creative-tim.com/argon-design-system/assets/img/icons/common/google.svg">
-                            Google
-                        </base-button>
-                    </div>
-                </template>
-                <template>
                     <div class="text-center text-muted mb-4">
-                        <small>Or sign in with credentials</small>
+                        <small class="fa fa-edit">Modify mission</small>
                     </div>
                     <form role="form">
                         <base-input alternative
-                                    class="mb-3"
-                                    placeholder="Email"
-                                    addon-left-icon="ni ni-email-83">
-                        </base-input>
-                        <base-input alternative
                                     type="password"
-                                    placeholder="Password"
-                                    addon-left-icon="ni ni-lock-circle-open">
+                                    placeholder="Mission"
+                                    addon-left-icon="fa fa-mission">
                         </base-input>
-                        <base-checkbox>
-                            Remember me
-                        </base-checkbox>
                         <div class="text-center">
-                            <base-button type="primary" class="my-4">Sign In</base-button>
+                            <base-button type="primary" class="text-right my-4">close</base-button>
+                            <base-button type="primary" class="test-right my-4">Modify</base-button>
                         </div>
                     </form>
                 </template>
@@ -159,7 +136,7 @@
 import Modal from "@/components/Modal.vue";
 export default {
   props: ["propsdata"],
-  name: "page-visits-table",
+  name: "mission-table",
   components: {
     Modal
   },

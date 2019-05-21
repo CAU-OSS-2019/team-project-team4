@@ -5,7 +5,7 @@
     <div class="container-fluid mt--7">
       <div class="row mt-5">
         <div class="col">
-          <page-visits-table v-bind:propsdata="resultData" v-on:manage="manage"></page-visits-table>
+          <mission-table v-bind:propsdata="resultData" v-on:manage="manage"></mission-table>
         </div>
       </div>
       <div class="row mt-5">
@@ -17,11 +17,11 @@
 <script>
 // Tables
 
-import PageVisitsTable from "./Dashboard/PageVisitsTable";
+import MissionTable from "./Dashboard/MissionTable";
 
 export default {
   components: {
-    PageVisitsTable
+    MissionTable
   },
 
   data() {

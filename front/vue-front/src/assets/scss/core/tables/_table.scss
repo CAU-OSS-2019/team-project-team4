@@ -24,7 +24,7 @@
     td,
     th {
         font-size: $table-body-font-size;
-        white-space: normal;
+        white-space: nowrap;
     }
     // Vetical align table content
     &.align-items-center {
