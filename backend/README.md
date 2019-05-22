@@ -20,6 +20,18 @@
 
 * ~~You can create your own mission, and modify it~~
 
+## File Structure
+```
+backend
+ │  app.js
+ │  package.json
+ │  README.md
+ │  twipcrawler.py
+ ├─bin
+ │      www
+ └─routes
+         index.js
+```
 ## Development Tool
 * Node.js
 * ElasticSearch

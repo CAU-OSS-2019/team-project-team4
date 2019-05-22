@@ -60,3 +60,24 @@ You can input your own sentence and find out the result.
 ```
 ./load_model_and_predict
 ```
+
+## 4. File Structure
+```
+nlp & deep learning
+│  checkpoint
+│  cnn_model.py
+│  cnn_test_data.csv
+│  cnn_train_data.csv
+│  load_model_and_predict.py
+│  nlp_w2v_model.py
+│  README.md
+│  saved_model.data-00000-of-00001
+│  saved_model.data-00000-of-00001.tempstate15726287265665935707
+│  saved_model.index
+│  saved_model.meta
+│  test.py
+│  train_accuracy_log.txt
+│  w2v_model
+│  
+└─ nlp_train_data(pubg chat logs)
+```
