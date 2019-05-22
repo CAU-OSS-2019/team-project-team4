@@ -10,10 +10,15 @@ Github link : https://github.com/yoonkim/CNN_sentence
 
 ## 1. Requirements
 * Python 3.7 or above
-* Tensorflow 0.12 or above
 * Numpy
 * KoNLPy - Okt
 * Word2Vec
+
+* Python 3.6 or above
+* Tensorflow 0.12 or above (python3.6)
+```
+python3.6 -m pip install tensorflow
+```
 
 ## 2. NLP
 The **natural language processing(NLP)** is done by using **KoNLPy**(pronounced “ko en el PIE”) which is a python package for Korean language.
