@@ -2,33 +2,33 @@
 
 ## Overview
 
-Tission is a **web platform** which automatically shows the valid mission chats from **Twitch** broadcast.
+* Tission is a **web platform** which automatically shows the valid mission chats from **Twitch** broadcast.
 
-It analyzes the **donation logs** of specified Twitch streamer in **real time** and classifies whether it is a valid mission or not using the pre-trained **deep learning model**.
+* It analyzes the **donation logs** of specified Twitch streamer in **real time** and classifies whether it is a valid mission or not using the pre-trained **deep learning model**.
 
 ## Principle
 
-The streamer must first login to both **Twip** and **Tission** platforms using his or her Twitch account.
+* The streamer must first login to both **Twip** and **Tission** platforms using his or her Twitch account.
 
-Then Tission starts crawling donation logs from Twip and sends it to our online server in **JSON** format.
+* Then Tission starts crawling donation logs from Twip and sends it to our online server in **JSON** format.
 
-The server saves what is recieved and runs the pre-trained **deep learning model** to classify valid missions from donation logs.
+* The server saves what is recieved and runs the pre-trained **deep learning model** to classify valid missions from donation logs.
+ 
+* If there are valid missions then it refreshes **Tission** web platform and shows the mission to the streamer.
 
-If there are valid missions then it refreshes **Tission** web platform and shows the mission to the streamer.
-
-The streamer can use **OBS** program to show Tission in some part of the screen so it can also be seen by Twitch broadcast viewers.
+* The streamer can use **OBS** program to show Tission in some part of the screen so it can also be seen by Twitch broadcast viewers.
 
 ## Frontend
 
-[Frontend developing procedures can be seen here](https://github.com/CAU-OSS-2019/team-project-team4/tree/master/front/vue-front)
+* [Frontend developing procedures can be seen here](https://github.com/CAU-OSS-2019/team-project-team4/tree/master/front/vue-front)
 
 ## Backend
 
-[Backend developing procedures can be seen here](https://github.com/CAU-OSS-2019/team-project-team4/tree/master/backend)
+* [Backend developing procedures can be seen here](https://github.com/CAU-OSS-2019/team-project-team4/tree/master/backend)
 
 ## NLP & Deep Learning Model
 
-[NLP & Deep Learning Model developing procedures can be seen here](https://github.com/CAU-OSS-2019/team-project-team4/tree/master/nlp%20%26%20deep%20learning)
+* [NLP & Deep Learning Model developing procedures can be seen here](https://github.com/CAU-OSS-2019/team-project-team4/tree/master/nlp%20%26%20deep%20learning)
 
 
 
