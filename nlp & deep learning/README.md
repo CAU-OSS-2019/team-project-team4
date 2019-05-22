@@ -12,10 +12,8 @@ Github link : https://github.com/yoonkim/CNN_sentence
 * Python 3.7 or above
 * Numpy
 * KoNLPy - Okt
-* Word2Vec
-
-* Python 3.6 or above
-* Tensorflow 0.12 or above (python3.6)
+* Word2Vec - gensim
+* Tensorflow 0.12 or above (exceptionally requires Python 3.6 not 3.7)
 ```
 python3.6 -m pip install tensorflow
 ```
