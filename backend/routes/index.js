@@ -12,16 +12,16 @@ var idcount = 0 // for assign id to mission data
 
 /** ElasticSearch */
 var client = new elasticsearch.Client({
-  host: 'https://search-tission-kszjrdofwxpmbreuu554ox4vf4.ap-northeast-2.es.amazonaws.com',  // this will be changed as real ES domain
+  host: '<es url>',  // this will be changed as real ES domain
   //log: 'trace'
 });
 
 /** Twitch Dev Data */
-var redirectURL = 'http://13.209.6.186/twitch';
-var clientID = '0gb9ne4nvxe76q6au65momgtjwwuhh';
-var clientSecret = 'lg1h1ouxu6o93oldqj3eoeb7sqh2n3';
+var redirectURL = '<redirect URL>';
+var clientID = '<client ID>';
+var clientSecret = '<client Secret>';
 
-// check if model is running
+// check if python file is running
 var bIsModelRun = false;
 
 // Home page
@@ -47,7 +47,6 @@ router.get('/login', function(req, res) {
   }
 
   res.redirect('https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id='+clientID+'&redirect_uri='+redirectURL+'&scope=user:read:email');
-
 });
 
 // get user information
@@ -118,8 +117,7 @@ router.post('/get_result', function(req, res) {
     var result = JSON.parse(data.toString());
     console.log(result);
     var i = 0;
-    //missionstr.push(result[i].content);
-    if(bIsModelRun == false) {runModel(result[i].content, i, result); bIsModelRun = true;}
+    if(bIsModelRun == false && result.length > 0) {runModel(result[i].content, i, result); bIsModelRun = true;}
   });
 
   // get information from current id
@@ -244,17 +242,15 @@ router.post('/get_userinfo', function(req, res) {
   res.send(userinfo);
 });
 
-//var process = spawn('python3', ['./twipcrawler.py']);  //python3
-
 function runModel(missionstr, i, result) {
   var filePath = path.join(__dirname, '../load_model_and_predict.py');
-  var process2 = spawn('python3', [filePath, missionstr]);  //python3
+  var process = spawn('python3', [filePath, missionstr]);  //python3
   console.log(missionstr);
   var bIsMission;
-  process2.stdout.on('data', function(data) {
+  process.stdout.on('data', function(data) {
     bIsMission = data.toString();
   });
-  process2.stdout.on('end', function() {
+  process.stdout.on('end', function() {
     if(bIsMission == 0)
     {
       idcount++;
@@ -262,9 +258,9 @@ function runModel(missionstr, i, result) {
       console.log(idcount);
       client.bulk({
         body: [
-          {"index": {"_index": "entity", "_type": "mission", "_id": "vo2qjsld-"+idcount}},
+          {"index": {"_index": "entity", "_type": "mission", "_id": result[i].streamerID+"-"+idcount}},
           {
-            "streamerID": 'vo2qjsld',//result[i].streamerID,
+            "streamerID": result[i].streamerID,
             "donatorID": result[i].donatorID,
             "content": result[i].content,
             "status": "mission"
@@ -274,20 +270,11 @@ function runModel(missionstr, i, result) {
         console.log(createres);
       })
     }
-    else
-    {
-      console.log('미션이 아닙니다');
-    }
+    else {console.log('미션이 아닙니다');}
 
     i++;
-    if(i < result.length)
-    {
-      runModel(result[i].content, i, result);
-    }
-    else
-    {
-      bIsModelRun = false;
-    }
+    if(i < result.length) {runModel(result[i].content, i, result);}
+    else {bIsModelRun = false;}
   });
 }
 
