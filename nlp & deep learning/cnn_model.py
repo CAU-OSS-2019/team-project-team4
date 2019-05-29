@@ -7,7 +7,7 @@ import numpy as np
 from konlpy.tag import Okt
 import csv
 import gensim
-
+import sys
 
 class TextCNN(object):
     """
@@ -27,7 +27,7 @@ class TextCNN(object):
         embedding_size = 100, filter_sizes = [3,4,5], num_filters = 128, l2_reg_lambda = 0.0):
 
         # Placeholders for input, output and dropout
-        self.input_x: object = tf.placeholder(tf.float32, [None, sequence_length, embedding_size], name="input_x")
+        self.input_x: object = tf.placeholder(tf.float32, [None, sequence_length, embedding_size, 1], name="input_x")
         #                                                             = 6             = 100
         self.input_y = tf.placeholder(tf.int32, [None, num_classes], name="input_y")
         #                                                  = 2
@@ -62,10 +62,9 @@ class TextCNN(object):
                     padding='VALID',
                     name="pool")
                 pooled_outputs.append(pooled)
-
         # Combine all the pooled features
         num_filters_total = num_filters * len(filter_sizes)
-        self.h_pool = tf.concat(3, pooled_outputs)
+        self.h_pool = tf.concat(pooled_outputs, 3)
         self.h_pool_flat = tf.reshape(self.h_pool, [-1, num_filters_total])
 
         # Add dropout
@@ -86,12 +85,12 @@ class TextCNN(object):
 
         # Calculate Mean cross-entropy loss
         with tf.name_scope("loss"):
-            losses = tf.nn.softmax_cross_entropy_with_logits(self.scores, self.input_y)
+            losses = tf.nn.softmax_cross_entropy_with_logits_v2(self.input_y, self.scores)
             self.loss = tf.reduce_mean(losses) + l2_reg_lambda * l2_loss
 
         # Accuracy
         with tf.name_scope("accuracy"):
-            correct_predictions = tf.equal(self.predictions, tf.argmax(self.input_y, 1))
+            correct_predictions = tf.equal(self.predictions, tf.argmax(self.input_y, 1)) # tf.argmax(self.input_y, 1)
             self.accuracy = tf.reduce_mean(tf.cast(correct_predictions, "float"), name="accuracy")
 
 
@@ -110,7 +109,10 @@ rdr = csv.reader(f)
 for line in rdr:
     x_data = line[0]
     y_data = line[1]
-    tokens = okt.pos( x_data[x_data.find('> ') + 2:] )
+    if '> ' in x_data:
+        tokens = okt.pos( x_data[x_data.find('> ') + 2:] )
+    else:
+        tokens = okt.pos(x_data)
     count = 0
     lineList = []
     for keyword, type in tokens:
@@ -120,10 +122,13 @@ for line in rdr:
     while len(lineList) < 6:
         lineList.append([0] * 100)
     while len(lineList) > 6:
-        lineList.pop(len(lineList))
+        lineList.pop()
     if lineList:
         cnn_x_train.append(lineList[:])
-        cnn_y_train.append(y_data)
+        if y_data == '1':
+            cnn_y_train.append([1, 0])
+        else:
+            cnn_y_train.append([0, 1])
     lineList.clear()
 f.close()
 
@@ -142,12 +147,25 @@ for line in rdr:
     while len(lineList) < 6:
         lineList.append([0] * 100)
     while len(lineList) > 6:
-        lineList.pop(len(lineList))
+        lineList.pop()
     if lineList:
         cnn_x_test.append(lineList[:])
-        cnn_y_test.append(y_data)
+        if y_data == 1:
+            cnn_y_test.append([1, 0])
+        else:
+            cnn_y_test.append([0, 1])
     lineList.clear()
 f.close()
+
+cnn_x_train = np.expand_dims(cnn_x_train, axis=3)
+# cnn_y_train = np.expand_dims(cnn_y_train, axis=1)
+cnn_x_test = np.expand_dims(cnn_x_test, axis=3)
+# cnn_y_test = np.expand_dims(cnn_y_test, axis=1)
+print("finished loading data")
+print(np.shape(cnn_x_train))
+print(np.shape(cnn_y_train))
+print(np.shape(cnn_x_test))
+print(np.shape(cnn_y_test))
 
 '''
 # Model Hyperparameters
@@ -160,7 +178,7 @@ flags.DEFINE_float("l2_reg_lambda", 0.1, "L2 regularization lambda (default: 0.0
 
 # Training parameters
 flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
-flags.DEFINE_integer("num_epochs", 10, "Number of training epochs (default: 200)")
+flags.DEFINE_integer("num_epochs", 100, "Number of training epochs (default: 200)")
 flags.DEFINE_integer("evaluate_every", 100, "Evaluate model on dev set after this many steps (default: 100)")
 flags.DEFINE_integer("checkpoint_every", 100, "Save model after this many steps (default: 100)")
 flags.DEFINE_integer("num_checkpoints", 5, "Number of checkpoints to store (default: 5)")
@@ -170,7 +188,8 @@ flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device pla
 flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
 
 FLAGS = tf.flags.FLAGS
-FLAGS._parse_flags()
+# FLAGS._parse_flags()
+FLAGS(sys.argv)
 print("\nParameters:")
 for attr, value in sorted(FLAGS.__flags.items()):
     print("{}={}".format(attr.upper(), value))
@@ -178,6 +197,7 @@ print("")
 
 # 3. train the model and test
 with tf.Graph().as_default():
+    init_op = tf.global_variables_initializer()
     sess = tf.Session()
     with sess.as_default():
         cnn = TextCNN(sequence_length = 6,
@@ -192,6 +212,7 @@ with tf.Graph().as_default():
         optimizer = tf.train.AdamOptimizer(1e-3)
         grads_and_vars = optimizer.compute_gradients(cnn.loss)
         train_op = optimizer.apply_gradients(grads_and_vars, global_step=global_step)
+        saver = tf.train.Saver();
 
         # Keep track of gradient values and sparsity (optional)
         grad_summaries = []
@@ -308,3 +329,6 @@ with tf.Graph().as_default():
             if current_step % FLAGS.checkpoint_every == 0:
                 path = saver.save(sess, checkpoint_prefix, global_step=current_step)
                 print("Saved model checkpoint to {}\n".format(path))
+
+        saver.save(sess, 'saved_model')
+

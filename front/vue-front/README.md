@@ -1,12 +1,15 @@
 # Tission
-![Tission](https://github.com/CAU-OSS-2019/team-project-team4/blob/front/front/vue-front/public/img/brand/tission2.png?raw=true)
-
+<p align="center">
+    <img src = "front\vue-front\public\img\brand\tission2.png" width="300" title="tission">
+</p>
 
 We created the Tission site using the Aragon dashboard. The goal is to facilitate management by running the necessary lists on the web for Twitch mission management.
 
 ## Purpose of Tission
-Tission is a broadcast support platform that helps Twitch TV broadcast on the web.
-The platform we plan to provide is the ability to automatically analyze and list the sponsorship text of viewers. By automatically analyzing and classifying messages in real time, Streamer is focused on the practicality of both viewers and streamers, ensuring that mission data is seamlessly managed without disturbing the broadcast progress. We will provide the role of enhancing the quality of personal broadcasting contents by merging with existing broadcasting support platform through management function and analysis function.
+ Tission is a broadcast support platform that helps Twitch TV broadcast on the web.
+ The platform we plan to provide is the ability to automatically analyze and list the sponsorship text of viewers. 
+ By automatically analyzing and classifying messages in real time, Streamer is focused on the practicality of both viewers and streamers, ensuring that mission data is seamlessly managed without disturbing the broadcast progress. 
+ We will provide the role of enhancing the quality of personal broadcasting contents by merging with existing broadcasting support platform through management function and analysis function.
 
 ## The fist page of Staring Tission
 ![Strating image of Tission](https://github.com/CAU-OSS-2019/team-project-team4/blob/front/front/vue-front/public/img/theme/first.PNG)
@@ -15,7 +18,7 @@ The platform we plan to provide is the ability to automatically analyze and list
 * [Vue-argon-dashboard](https://github.com/creativetimofficial/vue-argon-dashboard/)
 * [vuejs/vue](https://github.com/vuejs/vue)
 * [FontAwesome](https://github.com/FortAwesome/Font-Awesome)
-* [BootStrap](https://github.com/twbs/bootstrap)
+* [BootStrap4](https://github.com/twbs/bootstrap)
 
 
 ## Table of Contents
@@ -65,98 +68,40 @@ install yarn :` sudo npm install --global yarn`
 Within the download you'll find the following directories and files:
 
 ```
-|-- Vue Argon Dashboard
-    |-- .gitignore
-    |-- CHANGELOG.md
-    |-- ISSUES_TEMPLATE.md
-    |-- LICENSE.md
-    |-- README.md
-    |-- babel.config.js
-    |-- package.json
-    |--node-modules
-    |-- public
-    |   |-- favicon.ico
-    |   |-- index.html
-    |   |-- manifest.json
-    |   |-- robots.txt
-    |   |-- img
-    |-- src
-        |-- App.vue
-        |-- main.js
-        |-- registerServiceWorker.js
-        |-- router.js
-        |-- assets
-        |   |-- logo.png
-        |   |-- scss
-        |   |   |-- argon.scss
-        |   |-- vendor
-        |       |-- @fortawesome
-        |       |-- nucleo
-        |-- components
-        |   |-- Badge.vue
-        |   |-- BaseAlert.vue
-        |   |-- BaseButton.vue
-        |   |-- BaseCheckbox.vue
-        |   |-- BaseDropdown.vue
-        |   |-- BaseHeader.vue
-        |   |-- BaseInput.vue
-        |   |-- BaseNav.vue
-        |   |-- BasePagination.vue
-        |   |-- BaseProgress.vue
-        |   |-- BaseRadio.vue
-        |   |-- BaseSlider.vue
-        |   |-- BaseSwitch.vue
-        |   |-- BaseTable.vue
-        |   |-- Card.vue
-        |   |-- CloseButton.vue
-        |   |-- Modal.vue
-        |   |-- NavbarToggleButton.vue
-        |   |-- StatsCard.vue
-        |   |-- stringUtils.js
-        |   |-- Charts
-        |   |   |-- BarChart.js
-        |   |   |-- DoughnutChart.js
-        |   |   |-- LineChart.js
-        |   |   |-- PieChart.js
-        |   |   |-- config.js
-        |   |   |-- globalOptionsMixin.js
-        |   |   |-- optionHelpers.js
-        |   |-- SidebarPlugin
-        |   |   |-- SideBar.vue
-        |   |   |-- SidebarItem.vue
-        |   |   |-- index.js
-        |   |-- Tabs
-        |       |-- PillsLayout.vue
-        |       |-- Tab.vue
-        |       |-- TabPane.vue
-        |       |-- Tabs.vue
-        |       |-- TabsLayout.vue
-        |-- directives
-        |   |-- click-ouside.js
-        |-- layout
-        |   |-- AuthLayout.vue
-        |   |-- Content.vue
-        |   |-- ContentFooter.vue
-        |   |-- DashboardLayout.vue
-        |   |-- DashboardNavbar.vue
-        |-- plugins
-        |   |-- argon-dashboard.js
-        |   |-- globalComponents.js
-        |   |-- globalDirectives.js
-        |-- views
-            |-- Dashboard.vue
-            |-- Defalut.vue
-            |-- Icons.vue
-            |-- login_nouse.vue
-            |-- Maps.vue
-            |-- Register.vue
-            |-- Tables.vue
-            |-- UserProfile.vue
-            |-- Dashboard
-            |   |-- PageVisitsTable.vue
-            |   |-- SocialTrafficTable.vue
-            |-- Tables
-                |-- ProjectsTable.vue
+vue-front
+├─node_modules
+│  └─...
+├─public
+│  └─img
+│      ├─brand
+│      ├─icons
+│      └─theme
+└─src
+    │  App.vue
+    │  main.js
+    │  registerServiceWorker.js
+    │  router.js
+    ├─assets
+    │  ├─scss
+    │  │  ├─core
+    │  │  └─custom
+    │  └─vendor
+    │      ├─font-awesome
+    │      │  ├─css
+    │      │  └─fonts
+    │      └─nucleo
+    │          ├─css
+    │          └─fonts
+    ├─components
+    │  ├─NotificationPlugin
+    │  ├─SidebarPlugin
+    │  └─Tabs
+    ├─directives
+    ├─layout
+    ├─plugins
+    └─views
+        ├─Dashboard
+        └─Tables
 ```
 
 

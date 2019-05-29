@@ -4,10 +4,12 @@ import gensim
 import glob
 import csv
 
+# this can not be run on a normal computer it will crash^^ so use a server computer specified for deep learning
+
 # load data
 okt = Okt()
 nlp_dataList = []
-path = 'nlp_train_data/*.txt'
+path = 'nlp_train_data(pubg chat logs)/*.txt'
 files = glob.glob(path)
 for name in files:
     f = open(name, 'r', encoding='utf-8-sig')
