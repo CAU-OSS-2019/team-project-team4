@@ -49,8 +49,10 @@ More release notes for each version are available on [GitHub](https://github.com
 - [Download from Github](https://github.com/CAU-OSS-2019/team-project-team4/archive/master.zip).
 
 - Clone the repo : `git clone https://github.com/CAU-OSS-2019/team-project-team4.git`.
-- if you don't have node.js(to use npm) :  Downloal in here  https://nodejs.org/ko/
-- install yarn :` npm install --global yarn`
+- First, If you don't have node.js(to use npm) :  Downloal in here  https://nodejs.org/ko/
+-  Second,  To use the npm module `npm install`
+- Because of  using --global option  you need to use ` sudo`
+install yarn :` sudo npm install --global yarn`
 
 - We ned 3.x verserion, installing the official 3.x CLI : ` npm install -g @vue/cli`
 - or if you installed yarn : `yarn global add @vue/cli`
