@@ -130,8 +130,8 @@
               </form>
             </div>
             <template slot="footer">
-                <base-button type="secondary" @click="modals.modal1 = false">Cancel</base-button>
-                <base-button type="primary">Save Mission</base-button>
+              <base-button type="secondary" @click="modals.modal1 = false">Cancel</base-button>
+              <base-button type="primary" @click="newMission(donators, missions)">Save Mission</base-button>
             </template>
           </modal>
             
@@ -159,6 +159,11 @@ export default {
   methods: {
     manage: function(index, status) {
       this.$emit("manage", index, status);
+    },
+    newMission: function(donate, content) {
+      var index = [donate, content];
+      this.manage(index, "new_mission");
+      this.modals.modal1 = false;
     }
   }
 };
