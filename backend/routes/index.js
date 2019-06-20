@@ -12,14 +12,14 @@ var idcount = 0 // for assign id to mission data
 
 /** ElasticSearch */
 var client = new elasticsearch.Client({
-  host: '<es url>',  // this will be changed as real ES domain
+  host: 'https://search-tission-kszjrdofwxpmbreuu554ox4vf4.ap-northeast-2.es.amazonaws.com',  // this will be changed as real ES domain
   //log: 'trace'
 });
 
 /** Twitch Dev Data */
-var redirectURL = '<redirect URL>';
-var clientID = '<client ID>';
-var clientSecret = '<client Secret>';
+var redirectURL = 'http://13.209.6.186/twitch';
+var clientID = '0gb9ne4nvxe76q6au65momgtjwwuhh';
+var clientSecret = 'lg1h1ouxu6o93oldqj3eoeb7sqh2n3';
 
 // check if python file is running
 var bIsModelRun = false;
@@ -258,9 +258,9 @@ function runModel(missionstr, i, result) {
       console.log(idcount);
       client.bulk({
         body: [
-          {"index": {"_index": "entity", "_type": "mission", "_id": result[i].streamerID+"-"+idcount}},
+          {"index": {"_index": "entity", "_type": "mission", "_id": "vo2qjsld-"+idcount}},
           {
-            "streamerID": result[i].streamerID,
+            "streamerID": 'vo2qjsld',//result[i].streamerID,
             "donatorID": result[i].donatorID,
             "content": result[i].content,
             "status": "mission"
@@ -277,5 +277,23 @@ function runModel(missionstr, i, result) {
     else {bIsModelRun = false;}
   });
 }
+
+// mission success ratio
+router.post('/get_success_ratio', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  // get ratio
+
+});
+
+
+// FOR HUMAN SW ICT
+router.post('/ict_post', function(req, res) {
+  res.send('hi ict');
+});
 
 module.exports = router;
