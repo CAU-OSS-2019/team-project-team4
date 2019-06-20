@@ -9,6 +9,13 @@
             path: '/dashboard'
           }"
         />
+        <sidebar-item
+          :link="{
+            name: 'BrowserSource',
+            icon: 'ni ni-bullet-list-67 text-primary',
+            path: '/browsersource'
+          }"
+        />
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">

@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import DashboardLayout from "@/layout/DashboardLayout";
 import AuthLayout from "@/layout/AuthLayout";
+import BrowserSource from "@/views/BrowserSource.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -30,6 +31,11 @@ export default new Router({
                 component: () =>
                     import ( /* webpackChunkName: "demo" */ "./views/Dashboard.vue")
             }]
+        },
+        {
+            path: "/browsersource",
+            name: "/browsersource",
+            component: BrowserSource
         }
     ]
 });
