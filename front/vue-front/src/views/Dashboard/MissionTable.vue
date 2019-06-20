@@ -23,9 +23,9 @@
         </template>
 
 
-        <template class="align-items-center" slot-scope="row">
+        <template class="align-items-center" slot-scope="row" v-if="fitDate[row.index]">
           <th scope="row" width="10px">
-            {{ propsdata[row.index][1] }}
+              {{ propsdata[row.index][1] }}
           </th>
           <td class="align-content-center">
               {{ propsdata[row.index][2] }}
@@ -105,7 +105,14 @@
     </div>
     <div class="card-footer border-0">
       <div class="row align-items-center">
-        <div class="col text-right">
+        <div class="col text-right pb-3">
+          <base-button outline
+                type="twitch"
+                size="sm"
+                icon="fa fa-edit"
+                v-on:click="fit()">
+          date Select
+          </base-button>
           <base-button outline
                 type="twitch"
                 size="sm"
@@ -137,6 +144,28 @@
             
         </div>
       </div>
+          <div class="input-daterange datepicker row align-items-center">
+          <div class="col">
+              <div class="form-group">
+                  <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Start date" type="text" v-model="start_date">
+                  </div>
+              </div>
+          </div>
+          <div class="col">
+              <div class="form-group">
+                  <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="End date" type="text" v-model="end_date">
+                  </div>
+              </div>
+          </div>
+      </div>
     </div>
   </div>
 </template>
@@ -153,15 +182,45 @@ export default {
       modals: {
         modal0: false,
         modal1: false
-      }
+      },
+      start_date : "2019-01-01",
+      end_date : "2019-10-10",
+      fitDate : []
     };
   },
   methods: {
     manage: function(index, status) {
       this.$emit("manage", index, status);
-    }
-  }
+    },
+    setDate: function() {
+      this.start_date = this.propsdata[0][4];
+      this.end_date = this.propsdata[0][4];
+    },
+    fit: function() {
+      var start = new Date(this.start_date);
+      var end = new Date(this.end_date);
+      for (var i = 0; i < this.propsdata.length; i++) {
+        var compare = new Date(this.propsdata[i][4]);
+        if (start <= compare && end >= compare){
+          this.fitDate[i]=true;
+        }
+        else{
+          this.fitDate[i]=false;
+        }
+      }
+      console.log(this.fitDate);
+    },
+  },
+  mounted() {
+    this.setDate();
+    this.fit()
+    this.setRefresh();
+    console.log("mounted");
+  },
 };
+
+
+
 </script>
 <style>
 </style>

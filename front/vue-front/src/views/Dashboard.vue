@@ -52,9 +52,9 @@ export default {
 
   data() {
     return {
-      resultData: [["aaa", "bbbb", "ccc", "ddd"]],
-      resultSuccessData: [["aaa", "bb", "ccc", "ddd"]],
-      resultfailData: [["aaa", "bb", "ccc", "ddd"]],
+      resultData: [["aaa", "bbbb", "ccc", "ddd", "2019-06-21"]],
+      resultSuccessData: [["aaa", "bb", "ccc", "ddd", "2019-06-21"]],
+      resultfailData: [["aaa", "bb", "ccc", "ddd","2019-06-21"]],
       resultDataTemp: []
     };
   },
@@ -105,6 +105,7 @@ export default {
         if (this.resultDataTemp[i][3] == "mission") {
           //this.resultDataTemp.splice(i, 1)
           this.resultData.push(this.resultDataTemp[i]);
+          this.resultData[i][4] = this.resultData[i][4].substring(0,10);
         }
       }
       //this.resultData = this.resultDataTemp;
