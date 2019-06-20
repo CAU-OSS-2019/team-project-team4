@@ -16,7 +16,7 @@
     <div class="container-fluid mt--7">
       <div class="row mt-5">
         <div class="col">
-          <SuccessMission v-bind:propsdata="resultSuccessData"></SuccessMission>
+          <success-mission v-bind:propsdata="resultSuccessData"></success-mission>
         </div>
       </div>
       <div class="row mt-5">
@@ -27,7 +27,7 @@
     <div class="container-fluid mt--7">
       <div class="row mt-5">
         <div class="col">
-          <FailMission v-bind:failmission="resultfailData"></FailMission>
+          <fail-mission v-bind:failmission="resultfailData"></fail-mission>
         </div>
       </div>
       <div class="row mt-5">
@@ -40,8 +40,8 @@
 // Tables
 
 import MissionTable from "./Dashboard/MissionTable";
-import SuccessMission from "./Dashboard/SuccessMission";
-import FailMission from "./Dashboard/FailMission";
+import SuccessMission from "./Tables/SuccessMission";
+import FailMission from "./Tables/FailMission";
 
 export default {
   components: {
