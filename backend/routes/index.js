@@ -145,6 +145,7 @@ router.post('/get_result', function(req, res) {
         resultData[i].push(searchResult[i]._source.donatorID);
         resultData[i].push(searchResult[i]._source.content);
         resultData[i].push(searchResult[i]._source.status);
+        resultData[i].push(searchResult[i]._source.date); // added date
       }
     }
     //console.log(resultData);
@@ -278,7 +279,7 @@ function runModel(missionstr, i, result) {
   });
 }
 
-// mission success ratio
+// return mission ratio
 router.post('/get_success_ratio', function(req, res) {
   // Access control
   if(!req.session.bIsLogined)
@@ -287,9 +288,58 @@ router.post('/get_success_ratio', function(req, res) {
     return false;
   }
   // get ratio
-
+  client.search({
+    index: 'entity',
+    body: {
+      query: {
+        match: {
+          streamerID: req.session.loginAccount
+        }
+      },
+      aggs: {
+        ratio: {
+          terms: {
+            field: "status"
+          }
+        }
+      }
+    }
+  }, function(err, res) {
+    var total = res.hits.total;
+    var success_ratio = res.aggregations.ratio.buckets[1].doc_count/total;
+    res.send(success_ratio);
+  });
 });
-
+router.post('/get_fail_ratio', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  // get ratio
+  client.search({
+    index: 'entity',
+    body: {
+      query: {
+        match: {
+          streamerID: req.session.loginAccount
+        }
+      },
+      aggs: {
+        ratio: {
+          terms: {
+            field: "status"
+          }
+        }
+      }
+    }
+  }, function(err, res) {
+    var total = res.hits.total;
+    var fail_ratio = res.aggregations.ratio.buckets[2].doc_count/total;
+    res.send(fail_ratio);
+  });
+});
 
 // FOR HUMAN SW ICT
 router.post('/ict_post', function(req, res) {
