@@ -264,7 +264,8 @@ function runModel(missionstr, i, result) {
             "streamerID": 'vo2qjsld',//result[i].streamerID,
             "donatorID": result[i].donatorID,
             "content": result[i].content,
-            "status": "mission"
+            "status": "mission",
+            "date": result[i].date
           }
         ]
       }, function(err, createres) {
@@ -306,8 +307,18 @@ router.post('/get_success_ratio', function(req, res) {
     }
   }, function(err, res) {
     var total = res.hits.total;
-    var success_ratio = res.aggregations.ratio.buckets[1].doc_count/total;
-    res.send(success_ratio);
+    var success_ratio;
+    try {
+      var buckets = res.aggregations.ratio.buckets;
+      for(var i in buckets)
+      {
+        if(buckets[i].key == 'success') {success_ratio = res.aggregations.ratio.buckets[i].doc_count/total;}
+      }
+    } catch {
+      success_ratio = 0;
+    } finally {
+      res.send(success_ratio);
+    }
   });
 });
 router.post('/get_fail_ratio', function(req, res) {
@@ -336,14 +347,19 @@ router.post('/get_fail_ratio', function(req, res) {
     }
   }, function(err, res) {
     var total = res.hits.total;
-    var fail_ratio = res.aggregations.ratio.buckets[2].doc_count/total;
-    res.send(fail_ratio);
+    var fail_ratio;
+    try {
+      var buckets = res.aggregations.ratio.buckets;
+      for(var i in buckets)
+      {
+        if(buckets[i].key == 'fail') {fail_ratio = res.aggregations.ratio.buckets[i].doc_count/total;}
+      }
+    } catch {
+      fail_ratio = 0;
+    } finally {
+      res.send(fail_ratio);
+    }
   });
-});
-
-// FOR HUMAN SW ICT
-router.post('/ict_post', function(req, res) {
-  res.send('hi ict');
 });
 
 module.exports = router;
