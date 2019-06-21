@@ -12,14 +12,14 @@ var idcount = 0 // for assign id to mission data
 
 /** ElasticSearch */
 var client = new elasticsearch.Client({
-    host: '<es url>', // this will be changed as real ES domain
-    //log: 'trace'
+  host: 'https://search-tission-kszjrdofwxpmbreuu554ox4vf4.ap-northeast-2.es.amazonaws.com',  // this will be changed as real ES domain
+  //log: 'trace'
 });
 
 /** Twitch Dev Data */
-var redirectURL = '<redirect URL>';
-var clientID = '<client ID>';
-var clientSecret = '<client Secret>';
+var redirectURL = 'http://13.209.6.186/twitch';
+var clientID = '0gb9ne4nvxe76q6au65momgtjwwuhh';
+var clientSecret = 'lg1h1ouxu6o93oldqj3eoeb7sqh2n3';
 
 // check if python file is running
 var bIsModelRun = false;
@@ -126,24 +126,27 @@ router.post('/get_result', function(req, res) {
                 }
             }
         }
-    }, function(searcherr, searchres) {
+      }, function(searcherr, searchres) {
         console.log('search complete');
         // send data to frontend
         var resultData = [];
-        if (searchres.hits != null) {
-            var searchResult = searchres.hits.hits;
-            for (var i = 0; i < searchres.hits.total; i++) {
-                resultData.push(i);
-                resultData[i] = [];
-                resultData[i].push(searchResult[i]._id);
-                resultData[i].push(searchResult[i]._source.donatorID);
-                resultData[i].push(searchResult[i]._source.content);
-                resultData[i].push(searchResult[i]._source.status);
-            }
+        if(searchres.hits != null)
+        {
+        var searchResult = searchres.hits.hits;
+        for(var i = 0; i < searchres.hits.total; i++)
+        {
+            resultData.push(i);
+            resultData[i] = [];
+            resultData[i].push(searchResult[i]._id);
+            resultData[i].push(searchResult[i]._source.donatorID);
+            resultData[i].push(searchResult[i]._source.content);
+            resultData[i].push(searchResult[i]._source.status);
+            resultData[i].push(searchResult[i]._source.date); // added date
+        }
         }
         //console.log(resultData);
         res.send(resultData);
-    });
+  });
 });
 
 router.post('/mission_success', function(req, res) {
@@ -291,36 +294,121 @@ router.post('/get_userinfo', function(req, res) {
 });
 
 function runModel(missionstr, i, result) {
-    var filePath = path.join(__dirname, '../load_model_and_predict.py');
-    var process = spawn('python3', [filePath, missionstr]); //python3
-    console.log(missionstr);
-    var bIsMission;
-    process.stdout.on('data', function(data) {
-        bIsMission = data.toString();
-    });
-    process.stdout.on('end', function() {
-        if (bIsMission == 0) {
-            idcount++;
-            console.log('미션입니다' + i);
-            console.log(idcount);
-            client.bulk({
-                body: [
-                    { "index": { "_index": "entity", "_type": "mission", "_id": result[i].streamerID + "-" + idcount } },
-                    {
-                        "streamerID": result[i].streamerID,
-                        "donatorID": result[i].donatorID,
-                        "content": result[i].content,
-                        "status": "mission"
-                    }
-                ]
-            }, function(err, createres) {
-                console.log(createres);
-            })
-        } else { console.log('미션이 아닙니다'); }
+  var filePath = path.join(__dirname, '../load_model_and_predict.py');
+  var process = spawn('python3', [filePath, missionstr]);  //python3
+  console.log(missionstr);
+  var bIsMission;
+  process.stdout.on('data', function(data) {
+    bIsMission = data.toString();
+  });
+  process.stdout.on('end', function() {
+    if(bIsMission == 0)
+    {
+      idcount++;
+      console.log('미션입니다' + i);
+      console.log(idcount);
+      client.bulk({
+        body: [
+          {"index": {"_index": "entity", "_type": "mission", "_id": "vo2qjsld-"+idcount}},
+          {
+            "streamerID": 'vo2qjsld',//result[i].streamerID,
+            "donatorID": result[i].donatorID,
+            "content": result[i].content,
+            "status": "mission",
+            "date": result[i].date
+          }
+        ]
+      }, function(err, createres) {
+        console.log(createres);
+      })
+    }
+    else {console.log('미션이 아닙니다');}
 
         i++;
         if (i < result.length) { runModel(result[i].content, i, result); } else { bIsModelRun = false; }
     });
 }
+
+// return mission ratio
+router.post('/get_success_ratio', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  // get ratio
+  client.search({
+    index: 'entity',
+    body: {
+      query: {
+        match: {
+          streamerID: req.session.loginAccount
+        }
+      },
+      aggs: {
+        ratio: {
+          terms: {
+            field: "status"
+          }
+        }
+      }
+    }
+  }, function(err, res) {
+    var total = res.hits.total;
+    var success_ratio;
+    try {
+      var buckets = res.aggregations.ratio.buckets;
+      for(var i in buckets)
+      {
+        if(buckets[i].key == 'success') {success_ratio = res.aggregations.ratio.buckets[i].doc_count/total;}
+      }
+    } catch {
+      success_ratio = 0;
+    } finally {
+      res.send(success_ratio);
+    }
+  });
+});
+router.post('/get_fail_ratio', function(req, res) {
+  // Access control
+  if(!req.session.bIsLogined)
+  {
+    res.redirect('/');
+    return false;
+  }
+  // get ratio
+  client.search({
+    index: 'entity',
+    body: {
+      query: {
+        match: {
+          streamerID: req.session.loginAccount
+        }
+      },
+      aggs: {
+        ratio: {
+          terms: {
+            field: "status"
+          }
+        }
+      }
+    }
+  }, function(err, res) {
+    var total = res.hits.total;
+    var fail_ratio;
+    try {
+      var buckets = res.aggregations.ratio.buckets;
+      for(var i in buckets)
+      {
+        if(buckets[i].key == 'fail') {fail_ratio = res.aggregations.ratio.buckets[i].doc_count/total;}
+      }
+    } catch {
+      fail_ratio = 0;
+    } finally {
+      res.send(fail_ratio);
+    }
+  });
+});
 
 module.exports = router;
