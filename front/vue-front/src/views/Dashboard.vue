@@ -33,6 +33,12 @@
       <div class="row mt-5">
         <h1></h1>
       </div>
+       <div class="contatiner">
+      <div class="row mt-5">
+        <div class="col-md-9"></div>
+        <MissionKing v-bind:propsdata="resultDataTemp"></MissionKing>
+      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -42,12 +48,14 @@
 import MissionTable from "./Dashboard/MissionTable";
 import SuccessMission from "./Tables/SuccessMission";
 import FailMission from "./Tables/FailMission";
+import MissionKing from "./Dashboard/MissionKing";
 
 export default {
   components: {
     MissionTable,
     SuccessMission,
-    FailMission
+    FailMission,
+    MissionKing
   },
 
   data() {
