@@ -66,6 +66,22 @@ export default {
 
       console.log(status);
     },
+    modify: function(index, status, modifying_data){
+      let currentObj = this;
+      this.axios
+        .post("/" + status, {
+          id: this.resultData[index][0],
+          content: modifying_data
+        })
+        .then(function(response) {
+          currentObj.resultDataTemp = response.data;
+          currentObj.trimResultData();
+          currentObj.trimSuccessFailResultData();
+        })
+        .catch(function(error) {
+          console.log("senserver error");
+        });
+    },
     sendServer: function(index, status) {
       if (status !== "new_mission") {
         let currentObj = this;

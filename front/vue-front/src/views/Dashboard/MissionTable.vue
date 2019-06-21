@@ -55,7 +55,7 @@
                 type="twitch"
                 size="sm"
                 icon="fa fa-edit"
-                v-on:click="modals.modal0 = true"
+                v-on:click="modals.modal0 = true;  getCurrentMission(row.index);"
             ></base-button>
               <modal :show.sync="modals.modal0"
                       body-classes="p-0"
@@ -72,10 +72,10 @@
                       <input  type="text"
                         class="form-control mb-2"
                         placeholder="Mission"
-                        v-model="missions">
+                        v-model="modify_mission">
                         <div class="text-center">
-                            <base-button type="primary" class="text-right my-4">close</base-button>
-                            <base-button type="primary" class="test-right my-4">Modify</base-button>
+                            <base-button type="primary" class="text-right my-4" @click="modals.modal0 = false">close</base-button>
+                            <base-button type="primary" class="test-right my-4" @click="modifying(row_index,'mission_modify')">Modify</base-button>
                         </div>
                     </form>
                 </template>
@@ -130,8 +130,8 @@
               </form>
             </div>
             <template slot="footer">
-              <base-button type="secondary" @click="modals.modal1 = false">Cancel</base-button>
-              <base-button type="primary" @click="newMission(donators, missions)">Save Mission</base-button>
+                <base-button type="secondary" @click="modals.modal1 = false">Cancel</base-button>
+                <base-button type="primary" @click="newMission(donators, missions)">Save Mission</base-button>
             </template>
           </modal>
             
@@ -153,12 +153,23 @@ export default {
       modals: {
         modal0: false,
         modal1: false
-      }
+      },
+      modify_mission : ""
     };
   },
   methods: {
     manage: function(index, status) {
       this.$emit("manage", index, status);
+    },
+    getCurrentMission: function(index){
+      this.modify_mission = this.propsdata[index][2];
+      console.log(this.modify_mission);
+    },
+    modifying(index,status){
+      var modifying_data = this.modify_mission;
+      this.modals.modal0 = false;
+      console.log("modifying complete");
+      this.$emit("modify", index, status, modifying_data);
     },
     newMission: function(donate, content) {
       var index = [donate, content];
