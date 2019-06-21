@@ -246,7 +246,8 @@ router.post("/new_mission", function(req, res) {
                     streamerID: req.session.loginAccount,
                     donatorID: req.body.donatorID,
                     content: req.body.content,
-                    status: "mission"
+                    status: "mission",
+                    date: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
                 }
             ]
         },
