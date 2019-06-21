@@ -12,23 +12,51 @@
         <h1></h1>
       </div>
     </div>
+
+    <div class="container-fluid mt--7">
+      <div class="row mt-5">
+        <div class="col">
+          <success-mission v-bind:propsdata="resultSuccessData"></success-mission>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <h1></h1>
+      </div>
+    </div>
+    <div class="row mt-5"></div>
+    <div class="container-fluid mt--7">
+      <div class="row mt-5">
+        <div class="col">
+          <fail-mission v-bind:failmission="resultfailData"></fail-mission>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <h1></h1>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 // Tables
 
 import MissionTable from "./Dashboard/MissionTable";
+import SuccessMission from "./Tables/SuccessMission";
+import FailMission from "./Tables/FailMission";
 
 export default {
   components: {
-    MissionTable
+    MissionTable,
+    SuccessMission,
+    FailMission
   },
 
   data() {
     return {
-      resultData: [],
-      resultDataTemp: [],
-    }
+      resultData: [["aaa", "bbbb", "ccc", "ddd"]],
+      resultSuccessData: [["aaa", "bb", "ccc", "ddd"]],
+      resultfailData: [["aaa", "bb", "ccc", "ddd"]],
+      resultDataTemp: []
+    };
   },
 
   methods: {
@@ -38,6 +66,22 @@ export default {
 
       console.log(status);
     },
+    modify: function(index, status, modifying_data){
+      let currentObj = this;
+      this.axios
+        .post("/" + status, {
+          id: this.resultData[index][0],
+          content: modifying_data
+        })
+        .then(function(response) {
+          currentObj.resultDataTemp = response.data;
+          currentObj.trimResultData();
+          currentObj.trimSuccessFailResultData();
+        })
+        .catch(function(error) {
+          console.log("senserver error");
+        });
+    },
     sendServer: function(index, status) {
       let currentObj = this;
       this.axios
@@ -46,7 +90,8 @@ export default {
         })
         .then(function(response) {
           currentObj.resultDataTemp = response.data;
-          currentObj.trimResultData()
+          currentObj.trimResultData();
+          currentObj.trimSuccessFailResultData();
         })
         .catch(function(error) {
           console.log("senserver error");
@@ -54,11 +99,12 @@ export default {
     },
     refresh: function() {
       let currentObj = this;
-      this.axios.post('/get_result')
+      this.axios
+        .post("/get_result")
         .then(function(response) {
-          currentObj.resultDataTemp = response.data
+          currentObj.resultDataTemp = response.data;
           //console.log(currentObj.resultDataTemp)
-          currentObj.trimResultData()
+          currentObj.trimResultData();
         })
         .catch(function() {
           console.log("refresh error");
@@ -66,24 +112,43 @@ export default {
     },
     setRefresh: function() {
       setInterval(() => {
-        this.refresh()
-      }, 3000)
+        this.refresh();
+      }, 3000);
     },
     trimResultData: function() {
-      this.resultData = []
+      this.resultData = [];
       for (var i = 0; i < this.resultDataTemp.length; i++) {
         if (this.resultDataTemp[i][3] == "mission") {
           //this.resultDataTemp.splice(i, 1)
-          this.resultData.push(this.resultDataTemp[i])
+          this.resultData.push(this.resultDataTemp[i]);
         }
       }
       //this.resultData = this.resultDataTemp;
-      console.log(this.resultData)
+      console.log(this.resultData);
+    },
+    trimSuccessFailResultData: function() {
+      this.resultSuceessData = [];
+      this.resultFailData = [];
+      for (var i = 0; i < this.resultDataTemp.length; i++) {
+        if (this.resultDataTemp[i][3] == "success") {
+          this.resultSuccessData.push(this.resultDataTemp[i]);
+        } else if (this.resultDataTemp[i][3] == "fail") {
+          this.resultFailData.push(this.resultDataTemp[i]);
+        }
+      }
+      //this.resultData = this.resultDataTemp;
+      console.log(this.resultData);
     }
   },
+
   mounted() {
-    this.setRefresh()
+    this.setRefresh();
     console.log("mounted");
+  },
+  created() {
+    this.refresh();
+    this.trimSuccessFailResultData();
+    console.log(this.resultDataTemp);
   }
 };
 </script>
