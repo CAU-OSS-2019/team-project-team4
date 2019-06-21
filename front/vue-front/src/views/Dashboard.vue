@@ -67,6 +67,34 @@ export default {
       console.log(status);
     },
     sendServer: function(index, status) {
+      if (status !== "new_mission") {
+        let currentObj = this;
+        this.axios
+          .post("/" + status, {
+            id: this.resultData[index][0]
+          })
+          .then(function(response) {
+            currentObj.resultDataTemp = response.data;
+            currentObj.trimResultData();
+          })
+          .catch(function(error) {
+            console.log("senserver error");
+          });
+      } else {
+        let currentObj = this;
+        this.axios
+          .post("/" + status, {
+            donatorID: index[0],
+            content: index[1]
+          })
+          .then(function(response) {
+            currentObj.resultDataTemp = response.data;
+            currentObj.trimResultData();
+          })
+          .catch(function(error) {
+            console.log("senserver error");
+          });
+      }
       let currentObj = this;
       this.axios
         .post("/" + status, {

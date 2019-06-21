@@ -242,6 +242,42 @@ router.post('/get_userinfo', function(req, res) {
   res.send(userinfo);
 });
 
+//mission add router
+router.post("/new_mission", function(req, res) {
+  // Access control
+  if (!req.session.bIsLogined) {
+    res.redirect("/");
+    return false;
+  }
+  // make misssion at db
+  idcount++;
+  console.log(idcount);
+  client.bulk(
+    {
+      body: [
+        {
+          index: {
+            _index: "entity",
+            _type: "mission",
+            _id: req.session.loginAccount + "-" + idcount
+          }
+        },
+        {
+          streamerID: req.session.loginAccount,
+          donatorID: req.body.donatorID,
+          content: req.body.content,
+          status: "mission"
+        }
+      ]
+    },
+    function(err, createres) {
+      console.log(createres);
+    }
+  );
+});
+
+
+
 function runModel(missionstr, i, result) {
   var filePath = path.join(__dirname, '../load_model_and_predict.py');
   var process = spawn('python3', [filePath, missionstr]);  //python3
