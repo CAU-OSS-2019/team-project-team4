@@ -191,6 +191,15 @@ export default {
   methods: {
     manage: function(index, status) {
       this.$emit("manage", index, status);
+      // Imediately refresh
+      this.axios.post("/get_result")
+      .then(function(response) {
+        this.resultDataTemp = response.data;
+        this.trimResultData();
+      })
+      .catch(function() {
+        console.log("refresh error");
+      });
     },
     setDate: function() {
       this.start_date = this.propsdata[0][4];
