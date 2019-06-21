@@ -171,6 +171,7 @@
 </template>
 <script>
 import Modal from "@/components/Modal.vue";
+import Dashboard from "@/views/Dashboard.vue"
 export default {
   props: ["propsdata"],
   name: "mission-table",
@@ -195,8 +196,8 @@ export default {
       // Imediately refresh
       this.axios.post("/get_result")
       .then(function(response) {
-        this.resultDataTemp = response.data;
-        this.trimResultData();
+        Dashboard.resultDataTemp = response.data;
+        Dashboard.trimResultData();
       })
       .catch(function() {
         console.log("refresh error");
